@@ -7,4 +7,15 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  namespace :api do
+    namespace :v1 do
+      resources :users, only: [] do
+        member do
+          get :points, action: :show_points       # /api/v1/users/:id/points
+          patch :points, action: :update_points   # /api/v1/users/:id/points
+          get :redemptions                       # /api/v1/users/:id/redemptions
+        end
+      end
+    end
+  end
 end

@@ -1,5 +1,5 @@
-# app/controllers/api/base_controller.rb
 module Api
+  module V1
   class BaseController < ActionController::API
     before_action :set_user
 
@@ -24,5 +24,6 @@ module Api
     def render_error(message, status = :bad_request)
       render json: { error: message }, status: status
     end
+  end
   end
 end
