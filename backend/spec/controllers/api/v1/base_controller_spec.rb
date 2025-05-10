@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Api::BaseController, type: :controller do
-  controller(Api::BaseController) do
+RSpec.describe Api::V1::BaseController, type: :controller do
+  controller(Api::V1::BaseController) do
     def index
       render json: { user_id: @current_user.id }
     end
@@ -23,10 +23,10 @@ RSpec.describe Api::BaseController, type: :controller do
 
   before do
     routes.draw do
-      get 'index' => 'api/base#index'
-      get 'not_found' => 'api/base#trigger_not_found'
-      get 'invalid' => 'api/base#trigger_invalid'
-      get 'custom_error' => 'api/base#trigger_custom_error'
+      get 'index' => 'api/v1/base#index'
+      get 'not_found' => 'api/v1/base#trigger_not_found'
+      get 'invalid' => 'api/v1/base#trigger_invalid'
+      get 'custom_error' => 'api/v1/base#trigger_custom_error'
     end
   end
 
