@@ -6,7 +6,7 @@ module Api
       def show_points
         render json: { points_balance: @user.points_balance }
       end
-      
+
       def update_points
         @user.update!(points_params)
         render json: { points_balance: @user.points_balance }
