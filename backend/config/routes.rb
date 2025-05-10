@@ -13,9 +13,10 @@ Rails.application.routes.draw do
         member do
           get :points, action: :show_points       # /api/v1/users/:id/points
           patch :points, action: :update_points   # /api/v1/users/:id/points
-          get :redemptions                       # /api/v1/users/:id/redemptions
+          get :redemptions                        # /api/v1/users/:id/redemptions
         end
       end
+      resources :rewards, only: [ :index ]        # /api/v1/rewards
     end
   end
 end
