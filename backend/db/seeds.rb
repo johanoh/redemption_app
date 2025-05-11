@@ -15,9 +15,23 @@ end
 require 'faker'
 
 if Reward.count.zero?
+  used_titles = Set.new
+
   100.times do
+    title = nil
+
+    loop do
+      candidate = Faker::Commerce.product_name
+      unless used_titles.include?(candidate) || Reward.exists?(title: candidate)
+        title = candidate
+        break
+      end
+    end
+
+    used_titles << title
+
     Reward.create!(
-      title: Faker::Commerce.product_name,
+      title: title,
       points_cost: rand(100..2000)
     )
   end
