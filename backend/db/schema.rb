@@ -19,7 +19,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_11_200655) do
     t.datetime "updated_at", null: false
     t.index ["reward_id"], name: "index_redemptions_on_reward_id"
     t.index ["user_id", "redeemed_at"], name: "index_redemptions_on_user_id_and_redeemed_at"
-    t.index ["user_id", "reward_id"], name: "index_redemptions_on_user_id_and_reward_id", unique: true
     t.index ["user_id"], name: "index_redemptions_on_user_id"
   end
 
