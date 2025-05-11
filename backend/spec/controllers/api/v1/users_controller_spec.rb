@@ -59,7 +59,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
 
       it 'returns error message' do
         patch_request
-        expect(parsed_body).to include("error" => "Validation failed: Points balance must be greater than or equal to 0")
+        expect(parsed_body).to include("error" => "Amount must be positive")
       end
     end
   end
