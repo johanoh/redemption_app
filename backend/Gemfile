@@ -51,4 +51,6 @@ group :development, :test do
   gem "shoulda-matchers", "~> 6.5"
 
   gem "pry", "~> 0.15.0"
+
+  gem 'faker'
 end

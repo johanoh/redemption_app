@@ -11,3 +11,14 @@
 User.find_or_create_by!(name: "Test User") do |user|
   user.points_balance = 1500
 end
+
+require 'faker'
+
+if Reward.count.zero?
+  100.times do
+    Reward.create!(
+      title: Faker::Commerce.product_name,
+      points_cost: rand(100..2000)
+    )
+  end
+end
