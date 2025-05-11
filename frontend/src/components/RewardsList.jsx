@@ -2,6 +2,8 @@ import { usePoints } from "./PointsContext";
 import { useState, useEffect } from "react";
 import { getRewards } from "../api/rewards";
 import { redeemReward } from "../api/redemptions";
+import RewardCard from "./RewardCard";
+import PaginationControls from "./PaginationControls";
 
 function RewardsList() {
   const { points, setPoints } = usePoints();
@@ -41,7 +43,6 @@ function RewardsList() {
           `You successfully redeemed ${redeemedTitle} for ${redeemedCost} points!`,
         );
       } else {
-        console.warn("Invalid redeem response:", data);
         setError("Unexpected response from server.");
       }
     } catch (err) {
@@ -78,58 +79,30 @@ function RewardsList() {
         </label>
       </div>
 
-      <ul
+      <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
           gap: "1rem",
-          paddingLeft: 0,
         }}
       >
         {rewards.map((reward) => (
-          <li
+          <RewardCard
             key={reward.id}
-            style={{
-              listStyle: "none",
-              border: "1px solid #ddd",
-              padding: "1rem",
-              borderRadius: "8px",
-              background: "#fff",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              gap: "0.5rem",
-            }}
-          >
-            <div style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
-              {reward.title}
-            </div>
-            <div className="text-muted">{reward.points_cost} pts</div>
-            <button
-              onClick={() => handleRedeem(reward.id)}
-              disabled={loadingId === reward.id || reward.points_cost > points}
-            >
-              {loadingId === reward.id ? "Processing..." : "Redeem"}
-            </button>
-          </li>
+            reward={reward}
+            points={points}
+            onRedeem={handleRedeem}
+            loading={loadingId === reward.id}
+          />
         ))}
-      </ul>
+      </div>
 
       {meta && meta.pages > 1 && (
-        <div style={{ marginTop: "1rem", textAlign: "center" }}>
-          <button onClick={() => setPage((p) => p - 1)} disabled={page <= 1}>
-            Previous
-          </button>
-          <span style={{ margin: "0 1rem" }}>
-            Page {meta.page} of {meta.pages}
-          </span>
-          <button
-            onClick={() => setPage((p) => p + 1)}
-            disabled={page >= meta.pages}
-          >
-            Next
-          </button>
-        </div>
+        <PaginationControls
+          page={page}
+          totalPages={meta.pages}
+          onPageChange={setPage}
+        />
       )}
     </section>
   );

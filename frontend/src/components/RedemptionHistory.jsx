@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useUser } from "./UserContext";
 import { getRedemptionHistory } from "../api/users";
+import PaginationControls from "./PaginationControls";
 
 function RedemptionHistory() {
   const { id: userId } = useUser();
@@ -38,27 +39,20 @@ function RedemptionHistory() {
             <div style={{ fontWeight: "bold" }}>{item.reward.title}</div>
             <div className="text-muted">
               {item.reward.points_cost} pts —{" "}
-              {new Date(item.redeemed_at || item.created_at).toLocaleDateString()}
+              {new Date(
+                item.redeemed_at || item.created_at,
+              ).toLocaleDateString()}
             </div>
           </li>
         ))}
       </ul>
 
       {meta && meta.pages > 1 && (
-        <div style={{ marginTop: "1rem", textAlign: "center" }}>
-          <button onClick={() => setPage((p) => p - 1)} disabled={page <= 1}>
-            Previous
-          </button>
-          <span style={{ margin: "0 1rem" }}>
-            Page {meta.page} of {meta.pages}
-          </span>
-          <button
-            onClick={() => setPage((p) => p + 1)}
-            disabled={page >= meta.pages}
-          >
-            Next
-          </button>
-        </div>
+        <PaginationControls
+          page={page}
+          totalPages={meta.pages}
+          onPageChange={setPage}
+        />
       )}
     </section>
   );

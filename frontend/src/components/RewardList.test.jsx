@@ -98,20 +98,22 @@ describe("RewardsList", () => {
         meta: { page: 1, pages: 1 },
       });
     });
-  
+
     renderWithPoints(1000);
     await screen.findByText("Item A"); // wait for initial render
-  
+
     const select = screen.getByRole("combobox");
     fireEvent.change(select, { target: { value: "points_asc" } });
-  
+
     await waitFor(() => {
-      const listItems = screen.getAllByRole("listitem").map((li) => li.textContent);
+      const listItems = screen
+        .getAllByRole("listitem")
+        .map((li) => li.textContent);
       expect(listItems[0]).toContain("Item B");
       expect(listItems[1]).toContain("Item A");
     });
   });
-  
+
   it("disables the button while redeeming", async () => {
     rewardsApi.getRewards.mockResolvedValue({
       rewards: mockRewards,
