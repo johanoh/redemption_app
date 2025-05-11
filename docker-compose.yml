@@ -4,12 +4,13 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3000:80"  # host:container
+      - "3000:80"
     command: ["./bin/thrust", "bash", "-c", "bin/rails db:prepare && bin/rails db:seed && bin/rails server -b 0.0.0.0"]
     volumes:
       - ./backend:/rails
     environment:
       RAILS_ENV: development
+
   frontend:
     build:
       context: ./frontend
@@ -18,4 +19,5 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app
+      - /app/node_modules
     command: ["npm", "run", "dev", "--", "--host"]
