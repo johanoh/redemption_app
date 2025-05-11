@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { PointsContext } from "./PointsContext";
-import PointsBalance from "./PointsBalance";
+import { PointsContext } from "@user/PointsContext";
+import PointsBalance from "@user/PointsBalance";
 import React from "react";
 
 function renderWithPointsContext(pointsValue) {

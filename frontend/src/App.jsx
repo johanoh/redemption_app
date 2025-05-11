@@ -1,4 +1,4 @@
-import { UserContext } from "./components/UserContext";
+import { UserContext } from "./components/user/UserContext";
 import HomePage from "./pages/HomePage";
 import ErrorBoundary from "./components/ErrorBoundary";
 

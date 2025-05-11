@@ -1,12 +1,12 @@
 import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import RewardsList from "./RewardsList";
-import { PointsContext } from "./PointsContext";
-import * as rewardsApi from "../api/rewards";
-import * as redemptionsApi from "../api/redemptions";
+import List from "./List";
+import { PointsContext } from "@user/PointsContext";
+import * as rewardsApi from "@api/rewards";
+import * as redemptionsApi from "@api/redemptions";
 
-jest.mock("../api/rewards");
-jest.mock("../api/redemptions");
+jest.mock("@api/rewards");
+jest.mock("@api/redemptions");
 
 const mockRewards = [
   { id: 1, title: "Free Coffee", points_cost: 200 },
@@ -16,12 +16,12 @@ const mockRewards = [
 function renderWithPoints(points = 1000, setPoints = jest.fn()) {
   return render(
     <PointsContext.Provider value={{ points, setPoints }}>
-      <RewardsList />
+      <List />
     </PointsContext.Provider>,
   );
 }
 
-describe("RewardsList", () => {
+describe("List", () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
