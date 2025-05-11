@@ -8,11 +8,18 @@ module Api
       end
 
       def update_points
-        @user.update!(points_params)
-        render json: { points_balance: @user.points_balance }
-      rescue ActiveRecord::RecordInvalid => e
+        service = PointsService.new(user: @user, amount: params[:points_balance].to_i)
+
+        if service.set_user_points!
+          render json: { points_balance: @user.points_balance }
+        else
+          render_error("Failed to update points", :unprocessable_entity)
+        end
+
+      rescue ArgumentError => e
         render_error(e.message, :unprocessable_entity)
       end
+
 
       def redemptions
         redemptions = @user.redemptions.includes(:reward).order(created_at: :desc)

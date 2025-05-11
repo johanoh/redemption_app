@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         end
       end
       resources :rewards, only: [ :index ]        # /api/v1/rewards
+      resources :redemptions, only: [ :create ]   # /api/v1/redemptions
     end
   end
 end
