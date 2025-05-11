@@ -1,7 +1,7 @@
 import { usePoints } from "@user/PointsContext";
 import { useState, useEffect } from "react";
 import { getRewards } from "@api/rewards";
-import { redeemReward } from "@api/redemptions";
+import { useRedeemReward } from "./useRedeemReward";
 import PaginationControls from "@shared/PaginationControls";
 import Card from "./Card";
 
@@ -11,11 +11,7 @@ function List() {
   const [meta, setMeta] = useState(null);
   const [page, setPage] = useState(1);
   const [sortOption, setSortOption] = useState("points_asc");
-
-  const [loadingId, setLoadingId] = useState(null);
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-
+  const [loadError, setLoadError] = useState(null);
   const perPage = 10;
 
   useEffect(() => {
@@ -23,35 +19,13 @@ function List() {
       .then((data) => {
         setRewards(data.rewards || []);
         setMeta(data.meta || null);
-        setError(null);
+        setLoadError(null);
       })
-      .catch(() => setError("Failed to load rewards."));
+      .catch(() => setLoadError("Failed to load rewards."));
   }, [page, sortOption]);
 
-  const handleRedeem = async (rewardId) => {
-    setError(null);
-    setLoadingId(rewardId);
-    try {
-      const data = await redeemReward(rewardId);
-      const newBalance = data?.redemption?.points_balance;
-      const redeemedTitle = data?.redemption?.reward?.title;
-      const redeemedCost = data?.redemption?.reward?.points_cost;
-
-      if (typeof newBalance === "number") {
-        setPoints(newBalance);
-        setSuccessMessage(
-          `You successfully redeemed ${redeemedTitle} for ${redeemedCost} points!`,
-        );
-      } else {
-        setError("Unexpected response from server.");
-      }
-    } catch (err) {
-      console.error("Redemption failed", err);
-      setError("Redemption failed.");
-    } finally {
-      setLoadingId(null);
-    }
-  };
+  const { handleRedeem, loadingId, error, successMessage } =
+    useRedeemReward(setPoints);
 
   return (
     <section>
@@ -59,6 +33,7 @@ function List() {
       {successMessage && (
         <p style={{ color: "green", fontWeight: "bold" }}>{successMessage}</p>
       )}
+      {loadError && <p className="error">{loadError}</p>}
       {error && <p className="error">{error}</p>}
 
       <div style={{ marginBottom: "1rem", textAlign: "right" }}>
