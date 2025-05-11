@@ -1,14 +1,14 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import SetPointsForm from "./SetPointsForm";
-import { PointsContext } from "./PointsContext";
-import * as usersApi from "../api/users";
+import SetPointsForm from "@user/SetPointsForm";
+import { PointsContext } from "@user/PointsContext";
+import * as usersApi from "@api/users";
 
 // mock useUser to return static user ID
-jest.mock("./UserContext", () => ({
+jest.mock("@user/UserContext", () => ({
   useUser: () => ({ id: 1 }),
 }));
 
-jest.mock("../api/users");
+jest.mock("@api/users");
 
 describe("SetPointsForm", () => {
   const setPoints = jest.fn();

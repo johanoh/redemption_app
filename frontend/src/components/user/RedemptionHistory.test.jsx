@@ -1,12 +1,12 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import RedemptionHistory from "./RedemptionHistory";
-import * as usersApi from "../api/users";
+import RedemptionHistory from "@user/RedemptionHistory";
+import * as usersApi from "@api/users";
 
-jest.mock("./UserContext", () => ({
+jest.mock("@user/UserContext", () => ({
   useUser: () => ({ id: 1 }),
 }));
 
-jest.mock("../api/users");
+jest.mock("@api/users");
 
 describe("RedemptionHistory", () => {
   afterEach(() => {

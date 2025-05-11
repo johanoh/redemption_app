@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react";
-import { PointsContext, usePoints } from "./PointsContext";
+import { PointsContext, usePoints } from "@user/PointsContext";
 
 describe("usePoints", () => {
   it("returns values from PointsContext provider", () => {

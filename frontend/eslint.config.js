@@ -70,4 +70,14 @@ export default [
       },
     },
   },
+  {
+    files: ["vite.config.js"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
 ];

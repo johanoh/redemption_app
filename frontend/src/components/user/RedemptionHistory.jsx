@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useUser } from "./UserContext";
-import { getRedemptionHistory } from "../api/users";
-import PaginationControls from "./PaginationControls";
+import { useUser } from "@user/UserContext";
+import { getRedemptionHistory } from "@api/users";
+import PaginationControls from "@shared/PaginationControls";
 
 function RedemptionHistory() {
   const { id: userId } = useUser();

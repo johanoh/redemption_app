@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useUser } from "../components/UserContext";
-import { PointsContext } from "../components/PointsContext";
-import { getPoints } from "../api/users";
-import PointsBalance from "../components/PointsBalance";
-import RewardsList from "../components/RewardsList";
-import RedemptionHistory from "../components/RedemptionHistory";
+import { useUser } from "@user/UserContext";
+import { PointsContext } from "@user/PointsContext";
+import { getPoints } from "@api/users";
+import PointsBalance from "@user/PointsBalance";
+import RewardsList from "@rewards/List";
+import RedemptionHistory from "../components/user/RedemptionHistory";
 
 function HomePage() {
   const { id: userId } = useUser();

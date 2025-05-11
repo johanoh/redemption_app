@@ -1,6 +1,6 @@
-import { useUser } from "./UserContext";
-import { usePoints } from "./PointsContext";
-import { setPoints as apiSetPoints, getPoints } from "../api/users";
+import { useUser } from "@user/UserContext";
+import { usePoints } from "@user/PointsContext";
+import { setPoints as apiSetPoints, getPoints } from "@api/users";
 import { useState } from "react";
 
 function SetPointsForm() {

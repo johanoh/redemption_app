@@ -1,5 +1,5 @@
-import { usePoints } from "./PointsContext";
-import SetPointsForm from "./SetPointsForm";
+import { usePoints } from "@user/PointsContext";
+import SetPointsForm from "@user/SetPointsForm";
 
 function PointsBalance() {
   const { points } = usePoints();

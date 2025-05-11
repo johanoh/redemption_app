@@ -1,11 +1,11 @@
-import { usePoints } from "./PointsContext";
+import { usePoints } from "@user/PointsContext";
 import { useState, useEffect } from "react";
-import { getRewards } from "../api/rewards";
-import { redeemReward } from "../api/redemptions";
-import RewardCard from "./RewardCard";
-import PaginationControls from "./PaginationControls";
+import { getRewards } from "@api/rewards";
+import { redeemReward } from "@api/redemptions";
+import PaginationControls from "@shared/PaginationControls";
+import Card from "./Card";
 
-function RewardsList() {
+function List() {
   const { points, setPoints } = usePoints();
   const [rewards, setRewards] = useState([]);
   const [meta, setMeta] = useState(null);
@@ -87,7 +87,7 @@ function RewardsList() {
         }}
       >
         {rewards.map((reward) => (
-          <RewardCard
+          <Card
             key={reward.id}
             reward={reward}
             points={points}
@@ -108,4 +108,4 @@ function RewardsList() {
   );
 }
 
-export default RewardsList;
+export default List;

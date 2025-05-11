@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-function RewardCard({ reward, points, onRedeem, loading }) {
+function Card({ reward, points, onRedeem, loading }) {
   const disabled = reward.points_cost > points || loading;
 
   return (
@@ -28,7 +28,7 @@ function RewardCard({ reward, points, onRedeem, loading }) {
   );
 }
 
-RewardCard.propTypes = {
+Card.propTypes = {
   reward: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
@@ -39,4 +39,4 @@ RewardCard.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-export default RewardCard;
+export default Card;
