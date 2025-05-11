@@ -14,6 +14,7 @@ export async function setPoints(userId, points) {
   });
 }
 
-export async function getRedemptionHistory(userId) {
-  return fetchJson(`/api/v1/users/${userId}/redemptions`);
+export async function getRedemptionHistory(userId, { page = 1, per_page = 10 } = {}) {
+  const query = new URLSearchParams({ page, per_page }).toString();
+  return fetchJson(`/api/v1/users/${userId}/redemptions?${query}`);
 }
