@@ -2,24 +2,31 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::RewardsController", type: :request do
   describe "GET /api/v1/rewards" do
+    shared_context 'parsed API response' do
+      let(:parsed_body) { JSON.parse(response.body) }
+      let(:rewards_data) { parsed_body["rewards"] }
+      let(:meta_data) { parsed_body["meta"] }
+    end
+
     shared_examples 'a sorted reward list' do
       include_context 'parsed API response'
 
-      it { expect(parsed_body.first.keys).to match_array(%w[id title points_cost]) }
+      it { expect(rewards_data.first.keys).to match_array(%w[id title points_cost]) }
       it { expect(response).to have_http_status(:ok) }
-      it { expect(parsed_body.length).to eq(3) }
+      it { expect(rewards_data.length).to eq(3) }
 
       it 'returns rewards in correct order' do
         expected_rewards = expected_order.map do |reward|
           { "id" => reward.id, "title" => reward.title, "points_cost" => reward.points_cost }
         end
 
-        expect(parsed_body).to eq(expected_rewards)
+        expect(rewards_data).to eq(expected_rewards)
       end
-    end
 
-    shared_context 'parsed API response' do
-      let(:parsed_body) { JSON.parse(response.body) }
+      it 'includes pagination meta' do
+        expect(meta_data).to include("page", "count", "pages")
+        expect(meta_data["vars"]).to include("items")
+      end      
     end
 
     context 'when default sort' do
@@ -30,36 +37,36 @@ RSpec.describe "Api::V1::RewardsController", type: :request do
       let!(:reward2) { create(:reward, title: title_2, points_cost: 300) }
       let!(:reward3) { create(:reward, title: title_3, points_cost: 500) }
 
-      before { get "/api/v1/rewards?sort=#{sort_type}" }
+      before { get "/api/v1/rewards?sort=#{sort_type}&per_page=10" }
 
       context 'it returns rewards ordered by point cost ASC by default' do
         let(:sort_type) { nil }
-        let(:expected_order) { [ reward1, reward2, reward3 ] } # 100, 300, 500
+        let(:expected_order) { [ reward1, reward2, reward3 ] }
         include_examples 'a sorted reward list'
       end
 
       context 'with a valid sort type' do
         context 'with points ASC' do
           let(:sort_type) { 'points_asc' }
-          let(:expected_order) { [ reward1, reward2, reward3 ] } # 100, 300, 500
+          let(:expected_order) { [ reward1, reward2, reward3 ] }
           include_examples 'a sorted reward list'
         end
 
         context 'with points DESC' do
           let(:sort_type) { 'points_desc' }
-          let(:expected_order) { [ reward3, reward2, reward1 ] } # 500, 300, 100
+          let(:expected_order) { [ reward3, reward2, reward1 ] }
           include_examples 'a sorted reward list'
         end
 
         context 'with title ASC' do
           let(:sort_type) { 'title_asc' }
-          let(:expected_order) { [ reward1, reward2, reward3 ] } # Coffee, T-Shirt, Zebra
+          let(:expected_order) { [ reward1, reward2, reward3 ] }
           include_examples 'a sorted reward list'
         end
 
         context 'with title DESC' do
           let(:sort_type) { 'title_desc' }
-          let(:expected_order) { [ reward3, reward2, reward1 ] } # Zebra, T-Shirt, Coffee
+          let(:expected_order) { [ reward3, reward2, reward1 ] }
           include_examples 'a sorted reward list'
         end
       end
@@ -80,7 +87,7 @@ RSpec.describe "Api::V1::RewardsController", type: :request do
       include_context 'parsed API response'
       before { get "/api/v1/rewards" }
 
-      it { expect(parsed_body).to eq([]) }
+      it { expect(parsed_body["rewards"]).to eq([]) }
       it { expect(response).to have_http_status(:ok) }
     end
   end

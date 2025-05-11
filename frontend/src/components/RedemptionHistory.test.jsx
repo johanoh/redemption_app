@@ -2,12 +2,10 @@ import { render, screen, waitFor } from "@testing-library/react";
 import RedemptionHistory from "./RedemptionHistory";
 import * as usersApi from "../api/users";
 
-// Mock useUser to return a static user
 jest.mock("./UserContext", () => ({
   useUser: () => ({ id: 1 }),
 }));
 
-// Mock the API module
 jest.mock("../api/users");
 
 describe("RedemptionHistory", () => {
@@ -16,18 +14,21 @@ describe("RedemptionHistory", () => {
   });
 
   it("renders redemption items from API", async () => {
-    usersApi.getRedemptionHistory.mockResolvedValue([
-      {
-        id: 1,
-        reward: { title: "Free Coffee", points_cost: 200 },
-        redeemed_at: new Date().toISOString(),
-      },
-      {
-        id: 2,
-        reward: { title: "Discount Coupon", points_cost: 500 },
-        redeemed_at: new Date().toISOString(),
-      },
-    ]);
+    usersApi.getRedemptionHistory.mockResolvedValue({
+      redemptions: [
+        {
+          id: 1,
+          reward: { title: "Free Coffee", points_cost: 200 },
+          redeemed_at: new Date().toISOString(),
+        },
+        {
+          id: 2,
+          reward: { title: "Discount Coupon", points_cost: 500 },
+          redeemed_at: new Date().toISOString(),
+        },
+      ],
+      meta: { page: 1, pages: 1 },
+    });
 
     render(<RedemptionHistory />);
 

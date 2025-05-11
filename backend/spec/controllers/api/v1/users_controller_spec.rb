@@ -63,4 +63,29 @@ RSpec.describe Api::V1::UsersController, type: :request do
       end
     end
   end
+
+  describe "GET /api/v1/users/:id/redemptions" do
+    include_context "parsed API response"
+
+    let!(:rewards) { create_list(:reward, 3, points_cost: 100) }
+
+    before do
+      rewards.each do |reward|
+        create(:redemption, user: user, reward: reward)
+      end
+      get "/api/v1/users/#{user.id}/redemptions", params: { page: 1, per_page: 2 }
+    end
+
+    include_examples "successful response"
+
+    it 'returns paginated redemptions with meta' do
+      expect(parsed_body).to include("redemptions", "meta")
+    end
+
+    it 'includes reward details in each redemption' do
+      redemption = parsed_body["redemptions"].first
+      expect(redemption).to include("reward")
+      expect(redemption["reward"]).to include("title", "points_cost")
+    end
+  end
 end

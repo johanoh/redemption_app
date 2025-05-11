@@ -1,6 +1,8 @@
 module Api
   module V1
     class UsersController < BaseController
+      include Pagy::Backend
+
       before_action :set_user
 
       def show_points
@@ -20,12 +22,19 @@ module Api
         render_error(e.message, :unprocessable_entity)
       end
 
-
       def redemptions
         redemptions = @user.redemptions.includes(:reward).order(created_at: :desc)
-        render json: redemptions.as_json(include: :reward, except: [ :updated_at ])
+        @pagy, paginated = pagy(redemptions, page: params[:page], items: params[:per_page].to_i)
+      
+        render json: {
+          redemptions: paginated.as_json(
+            include: :reward,
+            except: [:updated_at]
+          ),
+          meta: pagy_metadata(@pagy)
+        }
       end
-
+      
       private
 
       def set_user

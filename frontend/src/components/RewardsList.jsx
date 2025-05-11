@@ -6,24 +6,25 @@ import { redeemReward } from "../api/redemptions";
 function RewardsList() {
   const { points, setPoints } = usePoints();
   const [rewards, setRewards] = useState([]);
+  const [meta, setMeta] = useState(null);
+  const [page, setPage] = useState(1);
+  const [sortOption, setSortOption] = useState("points_asc");
+
   const [loadingId, setLoadingId] = useState(null);
   const [error, setError] = useState(null);
-  const [sortOption, setSortOption] = useState("default");
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const sortedRewards = [...rewards].sort((a, b) => {
-    if (sortOption === "costLow") return a.points_cost - b.points_cost;
-    if (sortOption === "costHigh") return b.points_cost - a.points_cost;
-    if (sortOption === "titleAZ") return a.title.localeCompare(b.title);
-    if (sortOption === "titleZA") return b.title.localeCompare(a.title);
-    return 0;
-  });
+  const perPage = 10;
 
   useEffect(() => {
-    getRewards()
-      .then(setRewards)
+    getRewards({ page, per_page: perPage, sort: sortOption })
+      .then((data) => {
+        setRewards(data.rewards || []);
+        setMeta(data.meta || null);
+        setError(null);
+      })
       .catch(() => setError("Failed to load rewards."));
-  }, []);
+  }, [page, sortOption]);
 
   const handleRedeem = async (rewardId) => {
     setError(null);
@@ -36,11 +37,9 @@ function RewardsList() {
 
       if (typeof newBalance === "number") {
         setPoints(newBalance);
-        if (redeemedTitle) {
-          setSuccessMessage(
-            `You successfully redeemed ${redeemedTitle} for  ${redeemedCost} points!`,
-          );
-        }
+        setSuccessMessage(
+          `You successfully redeemed ${redeemedTitle} for ${redeemedCost} points!`,
+        );
       } else {
         console.warn("Invalid redeem response:", data);
         setError("Unexpected response from server.");
@@ -59,19 +58,22 @@ function RewardsList() {
       {successMessage && (
         <p style={{ color: "green", fontWeight: "bold" }}>{successMessage}</p>
       )}
-
       {error && <p className="error">{error}</p>}
+
       <div style={{ marginBottom: "1rem", textAlign: "right" }}>
         <label>
           Sort by:{" "}
           <select
             value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
+            onChange={(e) => {
+              setSortOption(e.target.value);
+              setPage(1); // reset to page 1 on sort change
+            }}
           >
-            <option value="costLow">Cost: Low to High</option>
-            <option value="costHigh">Cost: High to Low</option>
-            <option value="titleAZ">Title: A → Z</option>
-            <option value="titleZA">Title: Z → A</option>
+            <option value="points_asc">Cost: Low to High</option>
+            <option value="points_desc">Cost: High to Low</option>
+            <option value="title_asc">Title: A → Z</option>
+            <option value="title_desc">Title: Z → A</option>
           </select>
         </label>
       </div>
@@ -84,7 +86,7 @@ function RewardsList() {
           paddingLeft: 0,
         }}
       >
-        {sortedRewards.map((reward) => (
+        {rewards.map((reward) => (
           <li
             key={reward.id}
             style={{
@@ -112,6 +114,23 @@ function RewardsList() {
           </li>
         ))}
       </ul>
+
+      {meta && meta.pages > 1 && (
+        <div style={{ marginTop: "1rem", textAlign: "center" }}>
+          <button onClick={() => setPage((p) => p - 1)} disabled={page <= 1}>
+            Previous
+          </button>
+          <span style={{ margin: "0 1rem" }}>
+            Page {meta.page} of {meta.pages}
+          </span>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={page >= meta.pages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </section>
   );
 }

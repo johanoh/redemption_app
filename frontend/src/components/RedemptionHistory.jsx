@@ -5,13 +5,21 @@ import { getRedemptionHistory } from "../api/users";
 function RedemptionHistory() {
   const { id: userId } = useUser();
   const [history, setHistory] = useState([]);
+  const [meta, setMeta] = useState(null);
+  const [page, setPage] = useState(1);
   const [error, setError] = useState(null);
 
+  const perPage = 10;
+
   useEffect(() => {
-    getRedemptionHistory(userId)
-      .then(setHistory)
+    getRedemptionHistory(userId, { page, per_page: perPage })
+      .then((data) => {
+        setHistory(data.redemptions);
+        setMeta(data.meta);
+        setError(null);
+      })
       .catch(() => setError("Failed to load redemption history."));
-  }, [userId]);
+  }, [userId, page]);
 
   return (
     <section>
@@ -30,11 +38,28 @@ function RedemptionHistory() {
             <div style={{ fontWeight: "bold" }}>{item.reward.title}</div>
             <div className="text-muted">
               {item.reward.points_cost} pts —{" "}
-              {new Date(item.redeemed_at).toLocaleDateString()}
+              {new Date(item.redeemed_at || item.created_at).toLocaleDateString()}
             </div>
           </li>
         ))}
       </ul>
+
+      {meta && meta.pages > 1 && (
+        <div style={{ marginTop: "1rem", textAlign: "center" }}>
+          <button onClick={() => setPage((p) => p - 1)} disabled={page <= 1}>
+            Previous
+          </button>
+          <span style={{ margin: "0 1rem" }}>
+            Page {meta.page} of {meta.pages}
+          </span>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={page >= meta.pages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </section>
   );
 }
