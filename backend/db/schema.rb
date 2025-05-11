@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_10_175256) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_11_200655) do
   create_table "redemptions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "reward_id", null: false
@@ -19,6 +19,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_10_175256) do
     t.datetime "updated_at", null: false
     t.index ["reward_id"], name: "index_redemptions_on_reward_id"
     t.index ["user_id", "redeemed_at"], name: "index_redemptions_on_user_id_and_redeemed_at"
+    t.index ["user_id", "reward_id"], name: "index_redemptions_on_user_id_and_reward_id", unique: true
     t.index ["user_id"], name: "index_redemptions_on_user_id"
   end
 
@@ -28,6 +29,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_10_175256) do
     t.integer "points_cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_rewards_on_title", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -38,5 +40,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_10_175256) do
   end
 
   add_foreign_key "redemptions", "rewards"
+  add_foreign_key "redemptions", "rewards"
+  add_foreign_key "redemptions", "users"
   add_foreign_key "redemptions", "users"
 end

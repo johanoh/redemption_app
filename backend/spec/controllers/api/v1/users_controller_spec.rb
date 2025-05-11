@@ -67,7 +67,12 @@ RSpec.describe Api::V1::UsersController, type: :request do
   describe "GET /api/v1/users/:id/redemptions" do
     include_context "parsed API response"
 
-    let!(:rewards) { create_list(:reward, 3, points_cost: 100) }
+    let!(:rewards) do
+      Array.new(3) do |i|
+        create(:reward, title: "Reward #{i + 1}", points_cost: 100)
+      end
+    end
+    
 
     before do
       rewards.each do |reward|
