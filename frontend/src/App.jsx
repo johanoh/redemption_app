@@ -1,22 +1,15 @@
-import { useEffect } from "react";
+import { UserContext } from "./components/UserContext";
+import HomePage from "./pages/HomePage";
 
 function App() {
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/up`)
-      .then(res => res.text())
-      .then(data => {
-        console.log("Backend response:", data);
-      })
-      .catch(err => {
-        console.error("Failed to connect to backend:", err);
-      });
-  }, []);
+  const user = { id: 1 };
 
   return (
-    <div>
-      <h1>Rewards App</h1>
-      <p>Check the browser console for backend connectivity.</p>
-    </div>
+    <UserContext.Provider value={user}>
+      <main>
+        <HomePage />
+      </main>
+    </UserContext.Provider>
   );
 }
 
