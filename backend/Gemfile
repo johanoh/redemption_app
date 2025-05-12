@@ -54,5 +54,5 @@ group :development, :test do
 
   gem "pry", "~> 0.15.0"
 
-  gem 'faker'
+  gem "faker"
 end

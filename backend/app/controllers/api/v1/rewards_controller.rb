@@ -8,7 +8,7 @@ module Api
         @pagy, paginated_rewards = pagy(rewards, items: params[:per_page] || 10)
 
         render json: {
-          rewards: paginated_rewards.as_json(only: [:id, :title, :points_cost]),
+          rewards: paginated_rewards.as_json(only: [ :id, :title, :points_cost ]),
           meta: pagy_metadata(@pagy)
         }
       rescue ArgumentError => e

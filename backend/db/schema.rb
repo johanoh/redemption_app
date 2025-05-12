@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_11_200655) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_10_175256) do
   create_table "redemptions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "reward_id", null: false
@@ -28,7 +28,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_11_200655) do
     t.integer "points_cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["title"], name: "index_rewards_on_title", unique: true
   end
 
   create_table "users", force: :cascade do |t|

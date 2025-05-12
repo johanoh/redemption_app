@@ -26,7 +26,7 @@ RSpec.describe "Api::V1::RewardsController", type: :request do
       it 'includes pagination meta' do
         expect(meta_data).to include("page", "count", "pages")
         expect(meta_data["vars"]).to include("items")
-      end      
+      end
     end
 
     context 'when default sort' do
