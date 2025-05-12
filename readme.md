@@ -34,7 +34,7 @@ docker-compose run --rm frontend npm test
 The application can be found at `localhost:5173`.
 
 ### Local Setup
-Local setup is straightforward. ensure that the local Ruby version is 3.4.3.  To setup and run the application in the backend run the following:
+Local setup is straightforward. Ensure that the local Ruby version is 3.4.3.  To set up and run the application in the backend run the following:
 ```bash
 cd backend
 bundle install
@@ -42,7 +42,7 @@ rails db:prepare
 rails s
 ```
 
-To setup and run the frontend run the following commands
+To set up and run the frontend run the following commands
 ```bash
 cd frontend
 npm install
@@ -75,7 +75,7 @@ The Rewards page displays all available rewards in a paginated format for scalab
 - **Receive feedback** via a confirmation message that shows the reward name and cost upon successful redemption.
 - **See their balance update** in real time after redeeming a reward.
 
-Redemption eligibility is enforced both on the **frontend** (disabling buttons when insufficient points) and **backend** (rejecting unauthorized redemptions).
+Redemption eligibility is enforced both on the **frontend** (disabling buttons when insufficient points) and **backend** (rejecting unauthorised redemptions).
 
 ---
 
@@ -95,7 +95,7 @@ Located at the top of the application, the header includes:
 
 ## Tech Stack
 
-There are two components to this application, the Ruby on Rails backend and the React frontend.
+There are two components to this application; the Ruby on Rails backend and the React frontend.
 
 ### Code Quality
 
@@ -125,7 +125,7 @@ The `PointsService` class encapsulates all business logic related to a user's po
   - Deducting points from the balance
   - Creating a corresponding `Redemption` record
 
-All balance updates are handled through this single entrypoint, reducing duplication and centralizing validation and error handling.
+All balance updates are handled through this single entrypoint, reducing duplication and centralising validation and error handling.
 
 ##### Implementation
 
@@ -152,7 +152,7 @@ The data model consists of three core entities: `User`, `Reward`, and `Redemptio
 ##### User
 Represents a participant in the rewards program.
 - Maintains the current points balance.
-- Validates presence of a name and enforces a non-negative balance.
+- Validates the presence of a name and enforces a non-negative balance.
 - Associated with Reward through the Redemption join model.
 
 ##### Reward
@@ -168,9 +168,9 @@ Represents the act of a user redeeming a specific reward at a given time.
 - Designed to be append-only, ensuring an immutable audit trail.
 
 ###### Tradeoffs and Considerations
-- Normalization: The schema avoids data duplication by using foreign keys and join tables.
+- Normalisation: The schema avoids data duplication by using foreign keys and join tables.
 - Auditability: Redemptions preserve a history of user activity without altering past records.
-- Mutability: points_cost is not snapshotted in the Redemption model. In a production system, it may be beneficial to denormalize this field at redemption time to preserve historical accuracy if reward costs change.
+- Mutability: points_cost is not snapshotted in the Redemption model. In a production system, it may be beneficial to denormalise this field at redemption time to preserve historical accuracy if reward costs change.
 - Validation: Basic validations are implemented at the model level. Additional database-level constraints (indexes, foreign key constraints, uniqueness validations) could be added for robustness and performance in a production context.
 
 
@@ -213,12 +213,12 @@ The redemption flow uses `ActiveRecord::Base.transaction` in combination with `u
 
 ##### **Basic Styling**
 - Styling is applied inline and via basic class names.
-- **Tradeoff**: This keeps the visual layer lightweight and easy to inspect, but lacks scalability and consistency you’d get from a utility framework like Tailwind or component libraries like Material UI.
+- **Tradeoff**: This keeps the visual layer lightweight and easy to inspect, but lacks the scalability and consistency you’d get from a utility framework like Tailwind or component libraries like Material UI.
 
 ##### Error & Loading States
 - API failures are handled locally within components (e.g., setting error messages on failed fetch).
-- A global `ErrorBoundary` component is included to catch and display fallback UI for uncaught rendering errors.
-- **Tradeoff**: While render-time errors are handled globally, async errors and loading states are managed manually in each component. In a production app, you'd likely add centralized loading indicators, toast notifications, and consistent error display patterns.
+- A global `ErrorBoundary` component is included to catch and display a fallback UI for uncaught rendering errors.
+- **Tradeoff**: While render-time errors are handled globally, async errors and loading states are managed manually in each component. In a production app, you'd likely add centralised loading indicators, toast notifications, and consistent error display patterns.
 
 ##### **Manual Pagination & Sorting**
 - Pagination and sorting are handled via URL parameters and manual button rendering.
@@ -226,13 +226,13 @@ The redemption flow uses `ActiveRecord::Base.transaction` in combination with `u
 
 ##### **Component Separation**
 - The UI is broken down into modular components by responsibility (e.g., `PointsBalance`, `RewardsList`, `RedemptionHistory`).
-- **Tradeoff**: This keeps the app composable and easy to reason about without over engineering the structure for a small app.
+- **Tradeoff**: This keeps the app composable and easy to reason about without over-engineering the structure for a small app.
 
 
 ##### Testing
 
 - Tests are included, but not comprehensive
-- **Tradeoff**: Due to time constraints several conditions are not tested.  
+- **Tradeoff**: Due to time constraints, several conditions are not tested.  
 
 
 ## Limitations and Future Improvements
