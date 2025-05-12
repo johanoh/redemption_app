@@ -49,6 +49,17 @@ npm install
 npm run dev
 ```
 
+To test the backend, go to the `backend` directory and run 
+
+```bash
+rspec
+```
+
+To test the fronten,d go to the `frontend` directory and run 
+```bash
+npm run test
+```
+
 The application can be found at `localhost:5173`.
 
 
