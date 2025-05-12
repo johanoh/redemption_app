@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
+import { useUser } from "@user/UserContext";
 
 function Card({ reward, points, onRedeem, loading }) {
   const disabled = reward.points_cost > points || loading;
-
+  const { id: userId } = useUser();
   return (
     <li
       style={{
@@ -21,7 +22,7 @@ function Card({ reward, points, onRedeem, loading }) {
         {reward.title}
       </div>
       <div className="text-muted">{reward.points_cost} pts</div>
-      <button onClick={() => onRedeem(reward.id)} disabled={disabled}>
+      <button onClick={() => onRedeem(reward.id, userId)} disabled={disabled}>
         {loading ? "Processing..." : "Redeem"}
       </button>
     </li>

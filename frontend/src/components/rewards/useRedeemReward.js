@@ -6,11 +6,11 @@ export function useRedeemReward(setPoints) {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const handleRedeem = async (rewardId) => {
+  const handleRedeem = async (rewardId, userId) => {
     setError(null);
     setLoadingId(rewardId);
     try {
-      const data = await redeemReward(rewardId);
+      const data = await redeemReward(rewardId, userId);
       const newBalance = data?.redemption?.points_balance;
       const reward = data?.redemption?.reward;
 

@@ -19,7 +19,7 @@ RSpec.describe "Api::V1::RedemptionsController", type: :request do
       let(:user_point_balance) { 2000 }
       include_context "parsed API response"
       before do
-        post "/api/v1/redemptions", params: { reward_id: reward_id }
+        post "/api/v1/redemptions", params: { reward_id: reward_id, user_id: user.id }
       end
 
       it { expect(user.redemptions.count).to eq(1) }
@@ -46,7 +46,7 @@ RSpec.describe "Api::V1::RedemptionsController", type: :request do
       let(:user_point_balance) { 100 }
 
       before do
-        post "/api/v1/redemptions", params: { reward_id: reward_id }
+        post "/api/v1/redemptions", params: { reward_id: reward_id, user_id: user.id }
       end
 
       it { expect(response).to have_http_status(:unprocessable_entity) }
@@ -60,7 +60,7 @@ RSpec.describe "Api::V1::RedemptionsController", type: :request do
       let(:reward_id) { -1 }
 
       before do
-        post "/api/v1/redemptions", params: { reward_id: reward_id }
+        post "/api/v1/redemptions", params: { reward_id: reward_id, user_id: user.id }
       end
 
       it { expect(response).to have_http_status(:not_found) }
@@ -72,7 +72,7 @@ RSpec.describe "Api::V1::RedemptionsController", type: :request do
     context "when redemption fails" do
       before do
         allow_any_instance_of(PointsService).to receive(:redeem!).and_return(false)
-        post "/api/v1/redemptions", params: { reward_id: reward_id }
+        post "/api/v1/redemptions", params: { reward_id: reward_id, user_id: user.id }
       end
 
       it { expect(response).to have_http_status(:unprocessable_entity) }
@@ -84,7 +84,7 @@ RSpec.describe "Api::V1::RedemptionsController", type: :request do
     context "when an exception occurs" do
       before do
         allow_any_instance_of(PointsService).to receive(:redeem!).and_raise("Unexpected error")
-        post "/api/v1/redemptions", params: { reward_id: reward_id }
+        post "/api/v1/redemptions", params: { reward_id: reward_id, user_id: user.id }
       end
 
       it { expect(response).to have_http_status(:unprocessable_entity) }

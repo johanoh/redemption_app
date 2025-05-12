@@ -1,7 +1,6 @@
 module Api
   module V1
   class BaseController < ActionController::API
-    before_action :set_user
 
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
@@ -9,10 +8,12 @@ module Api
     private
 
     def set_user
-      # hard coded for demo app to only have one user, Production app would return correct user
-      @current_user = User.first
+      user_id = params[:user_id] || params[:id]
+      @current_user = User.find(user_id)
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "User not found" }, status: :not_found
     end
-
+    
     def render_not_found(exception)
       render json: { error: exception.message }, status: :not_found
     end
