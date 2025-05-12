@@ -24,7 +24,7 @@ docker-compose up
 To test the backend
 
 ```bash
-docker-compose run --rm backend bundle exec rspec
+docker-compose run --rm backend bundle exec bin/rails spec
 ```
 To test the frontend
 ```bash
