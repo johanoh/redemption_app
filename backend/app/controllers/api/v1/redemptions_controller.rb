@@ -1,6 +1,8 @@
 module Api
   module V1
     class RedemptionsController < BaseController
+      before_action :set_user
+
       def create
         reward = Reward.find(params[:reward_id])
         service = PointsService.new(user: @current_user, reward: reward)

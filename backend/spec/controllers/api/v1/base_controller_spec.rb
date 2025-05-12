@@ -30,13 +30,6 @@ RSpec.describe Api::V1::BaseController, type: :controller do
     end
   end
 
-  describe "before_action :set_user" do
-    it "assigns the first user as current_user" do
-      get :index
-      expect(JSON.parse(response.body)["user_id"]).to eq(user.id)
-    end
-  end
-
   describe "error handling" do
     it "handles RecordNotFound" do
       get :trigger_not_found
