@@ -1,7 +1,6 @@
 module Api
   module V1
   class BaseController < ActionController::API
-
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
 
@@ -13,7 +12,7 @@ module Api
     rescue ActiveRecord::RecordNotFound
       render json: { error: "User not found" }, status: :not_found
     end
-    
+
     def render_not_found(exception)
       render json: { error: exception.message }, status: :not_found
     end

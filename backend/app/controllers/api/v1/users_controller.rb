@@ -23,18 +23,18 @@ module Api
       end
 
       def redemptions
-        redemptions = @user.redemptions.includes(:reward).order(created_at: :desc)
-        @pagy, paginated = pagy(redemptions, page: params[:page], items: params[:per_page].to_i)
-      
+        redemptions = @user.redemptions.includes(:reward).order(redeemed_at: :desc)
+        @pagy, paginated = pagy(redemptions, page: params[:page], items: params[:per_page])
+
         render json: {
           redemptions: paginated.as_json(
             include: :reward,
-            except: [:updated_at]
+            except: [ :updated_at ]
           ),
           meta: pagy_metadata(@pagy)
         }
       end
-      
+
       private
 
       def set_user

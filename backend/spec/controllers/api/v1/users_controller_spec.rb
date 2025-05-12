@@ -72,7 +72,7 @@ RSpec.describe Api::V1::UsersController, type: :request do
         create(:reward, title: "Reward #{i + 1}", points_cost: 100)
       end
     end
-    
+
 
     before do
       rewards.each do |reward|
